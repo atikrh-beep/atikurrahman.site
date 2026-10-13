@@ -1,0 +1,50 @@
+{
+  "entities": {
+    "ProfileContent": {
+      "title": "Profile Content",
+      "description": "Public portfolio profile content including custom photo reference and metadata",
+      "type": "object",
+      "properties": {
+        "photoUrl": {
+          "type": "string",
+          "description": "Public URL or persistent image data for profile photo"
+        },
+        "updatedAt": {
+          "type": "number",
+          "description": "Timestamp when profile was last updated"
+        },
+        "updatedBy": {
+          "type": "string",
+          "description": "Email or UID of admin who updated the profile"
+        }
+      },
+      "required": ["updatedAt"]
+    },
+    "VisitorStats": {
+      "title": "Visitor Statistics",
+      "description": "Persistent total count of public portfolio visitors",
+      "type": "object",
+      "properties": {
+        "totalCount": {
+          "type": "number",
+          "description": "Cumulative total number of visits to public portfolio"
+        },
+        "updatedAt": {
+          "type": "number",
+          "description": "Timestamp of last visitor increment"
+        }
+      },
+      "required": ["totalCount"]
+    }
+  },
+  "firestore": {
+    "/portfolio_content/{contentId}": {
+      "schema": "ProfileContent",
+      "description": "Global portfolio configuration and public content documents"
+    },
+    "/portfolio_stats/{statsId}": {
+      "schema": "VisitorStats",
+      "description": "Visitor analytics and statistics counter documents"
+    }
+  }
+}

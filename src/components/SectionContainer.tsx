@@ -27,14 +27,14 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   return (
     <section 
       id={id}
-      className={`w-full max-w-4xl mx-auto px-6 sm:px-8 py-8 sm:py-12 ${className}`}
+      className={`w-full max-w-5xl mx-auto px-6 sm:px-10 py-14 sm:py-20 ${className}`}
       aria-label={title || label}
     >
-      <div className="space-y-4">
+      <div className="space-y-6">
         {/* Section Heading - Mask Reveal */}
         <div data-intro={dataIntroHeading}>
           <ScrollReveal variant="mask-up" duration={650}>
-            <span className="inline-block text-[11px] uppercase tracking-widest font-mono text-[var(--text-muted)] select-none">
+            <span className="inline-block text-[10px] uppercase tracking-[0.24em] font-mono text-[var(--accent)] select-none">
               {label}
             </span>
           </ScrollReveal>
@@ -45,14 +45,14 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
           <div className="space-y-1">
             {title && (
               <ScrollReveal variant="mask-up" delay={60} duration={700}>
-                <h2 className="text-lg sm:text-xl font-semibold tracking-tight text-[var(--text-primary)]">
+                <h2 className="text-2xl sm:text-3xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
                   {title}
                 </h2>
               </ScrollReveal>
             )}
             {subtitle && (
               <ScrollReveal variant="fade-up" delay={120} duration={650}>
-                <p className="text-[11px] sm:text-xs text-[var(--text-muted)] font-normal leading-relaxed">
+                <p className="text-sm text-[var(--text-muted)] font-normal leading-relaxed max-w-xl">
                   {subtitle}
                 </p>
               </ScrollReveal>
@@ -68,4 +68,3 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
     </section>
   );
 };
-

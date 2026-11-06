@@ -12,7 +12,7 @@ export const Skills: React.FC = () => {
       subtitle="Structured representation of programming languages, foundational computer science, and practical tooling."
     >
       {/* Visual Hierarchy Layout with refined scroll reveal */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
         {SKILL_CATEGORIES.map((category, idx) => (
           <ScrollReveal
             key={category.title}
@@ -20,7 +20,7 @@ export const Skills: React.FC = () => {
             delay={idx * 75}
             duration={650}
           >
-            <div className="p-4 sm:p-5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:border-[var(--border-hover)] transition-colors duration-200 h-full">
+            <div className="portfolio-surface p-5 sm:p-6 rounded-2xl hover:border-[var(--border-hover)] transition-colors duration-300 h-full">
               <h3 className="text-xs sm:text-[13px] font-semibold text-[var(--text-primary)] tracking-tight mb-1">
                 {category.title}
               </h3>
@@ -46,4 +46,3 @@ export const Skills: React.FC = () => {
     </SectionContainer>
   );
 };
-

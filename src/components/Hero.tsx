@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { ScrollReveal } from './ScrollReveal.tsx';
 import { FULL_NAME, HERO_HEADLINE, PROFILE_IMAGE_URL, PROFILE_IMAGE_FALLBACK } from '../data/portfolioData.ts';
 import { 
   auth, 
@@ -241,9 +242,9 @@ export const Hero: React.FC = () => {
         Horizontal arrangement:
         [Photo] → Atikur Rahman + Tagline directly below name
       */}
-      <div className="flex items-center gap-5 sm:gap-7">
+      <div className="flex items-center gap-5 sm:gap-7" data-intro="1">
         {/* Left: Profile Photo Container */}
-        <div className="shrink-0 flex justify-start">
+        <ScrollReveal variant="fade-up" duration={700} className="shrink-0 flex justify-start">
           <div className="relative group" ref={menuRef}>
             <div 
               className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] relative overflow-hidden shadow-sm flex items-center justify-center transition-all duration-200"
@@ -292,7 +293,7 @@ export const Hero: React.FC = () => {
                 title="Firebase Cloud Photo Options"
                 className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--text-primary)] shadow-md flex items-center justify-center transition-transform hover:scale-110 cursor-pointer z-10"
               >
-                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
                   <path d="m15 5 4 4" />
                 </svg>
@@ -347,17 +348,21 @@ export const Hero: React.FC = () => {
               </div>
             )}
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Right: Full Name & Tagline directly below */}
         <div className="space-y-1 sm:space-y-1.5">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-[var(--text-primary)] leading-tight">
-            {FULL_NAME}
-          </h1>
+          <ScrollReveal variant="mask-up" delay={50} duration={750}>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-[var(--text-primary)] leading-tight">
+              {FULL_NAME}
+            </h1>
+          </ScrollReveal>
 
-          <p className="text-xs sm:text-[13px] text-[var(--text-body)] font-normal leading-relaxed max-w-xl">
-            {HERO_HEADLINE}
-          </p>
+          <ScrollReveal variant="fade-up" delay={120} duration={700}>
+            <p data-intro="2" className="text-xs sm:text-[13px] text-[var(--text-body)] font-normal leading-relaxed max-w-xl">
+              {HERO_HEADLINE}
+            </p>
+          </ScrollReveal>
         </div>
       </div>
     </section>

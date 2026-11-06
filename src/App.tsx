@@ -4,6 +4,8 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { RevealProvider, useReveal } from './context/RevealContext.tsx';
+import { CursorSwarmIntro } from './components/CursorSwarmIntro.tsx';
 import { SiteHeader } from './components/SiteHeader.tsx';
 import { Hero } from './components/Hero.tsx';
 import { About } from './components/About.tsx';
@@ -15,14 +17,17 @@ import { HandwrittenSignature } from './components/HandwrittenSignature.tsx';
 import { BottomNavigation, NavTarget } from './components/BottomNavigation.tsx';
 import { Footer } from './components/Footer.tsx';
 import { AtmosphericCloudOverlay } from './components/AtmosphericCloudOverlay.tsx';
-import { recordPublicVisit } from './services/visitorStats.ts';
+import { checkIsAdminContext } from './firebase.ts';
 
-export default function App() {
+function PortfolioApp() {
   // Dark mode is the primary default experience
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   
   // Dedicated view switching: 'home' vs 'programming'
   const [currentView, setCurrentView] = useState<'home' | 'programming'>('home');
+
+  // Coordinated website reveal context
+  const { isSiteLoaded, setIsSiteLoaded } = useReveal();
 
   const [radialOverlay, setRadialOverlay] = useState<{
     x: number;
@@ -30,17 +35,6 @@ export default function App() {
     targetTheme: 'dark' | 'light';
     active: boolean;
   } | null>(null);
-
-  // Automatically count public portfolio visit (exact 1 increment, admin excluded)
-  useEffect(() => {
-    recordPublicVisit();
-  }, []);
-
-  // Initialize theme class on document element
-  useEffect(() => {
-    document.documentElement.classList.remove('light', 'dark');
-    document.documentElement.classList.add(theme);
-  }, [theme]);
 
   // Soft radial reveal theme toggle handler
   const handleToggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -119,8 +113,11 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-body)] selection:bg-[var(--text-primary)]/15 selection:text-[var(--text-primary)] transition-colors duration-500">
-      {/* Website Identity Header (atikurrahman.site) + Top-Right Dhaka Time & Theme Control */}
+    <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-body)] selection:bg-[var(--text-primary)]/15 selection:text-[var(--text-primary)] transition-colors duration-500 relative">
+      {/* Sophisticated Collaborative Cursor Swarm Intro & Live Build Reveal */}
+      {currentView === 'home' && <CursorSwarmIntro />}
+
+      {/* Website Header + Top-Right Dhaka Time & Theme Control */}
       <SiteHeader 
         onNavigateHome={() => handleNavigate('home')} 
         theme={theme}
@@ -143,7 +140,7 @@ export default function App() {
         )}
       </main>
 
-      {/* Minimal Two-Column Footer */}
+      {/* Minimal Two-Column Footer with Voluntary Identification */}
       <Footer />
 
       {/* Atmospheric Cloud / Mist Scroll Transition Overlay */}
@@ -167,5 +164,13 @@ export default function App() {
         />
       )}
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <RevealProvider>
+      <PortfolioApp />
+    </RevealProvider>
   );
 }

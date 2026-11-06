@@ -19,32 +19,12 @@
         }
       },
       "required": ["updatedAt"]
-    },
-    "VisitorStats": {
-      "title": "Visitor Statistics",
-      "description": "Persistent total count of public portfolio visitors",
-      "type": "object",
-      "properties": {
-        "totalCount": {
-          "type": "number",
-          "description": "Cumulative total number of visits to public portfolio"
-        },
-        "updatedAt": {
-          "type": "number",
-          "description": "Timestamp of last visitor increment"
-        }
-      },
-      "required": ["totalCount"]
     }
   },
   "firestore": {
     "/portfolio_content/{contentId}": {
       "schema": "ProfileContent",
       "description": "Global portfolio configuration and public content documents"
-    },
-    "/portfolio_stats/{statsId}": {
-      "schema": "VisitorStats",
-      "description": "Visitor analytics and statistics counter documents"
     }
   }
 }

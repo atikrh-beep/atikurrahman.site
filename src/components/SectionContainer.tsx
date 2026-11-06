@@ -1,4 +1,5 @@
 import React from 'react';
+import { ScrollReveal } from './ScrollReveal.tsx';
 
 interface SectionContainerProps {
   id?: string;
@@ -7,15 +8,12 @@ interface SectionContainerProps {
   subtitle?: string;
   children: React.ReactNode;
   className?: string;
+  dataIntroHeading?: string;
 }
 
 /**
- * Vertical Section Layout
- * Ensures heading, title, subtitle, and content stay together in the main content area:
- * - Label / Heading at top
- * - Title & Subtitle directly below (if present)
- * - Section content directly below
- * - Identical structure in both full-screen and non-full-screen modes
+ * Vertical Section Layout with refined scroll-driven reveal transitions
+ * Ensures heading, title, subtitle, and content stay together in the main content area.
  */
 export const SectionContainer: React.FC<SectionContainerProps> = ({
   id,
@@ -24,6 +22,7 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   subtitle,
   children,
   className = '',
+  dataIntroHeading,
 }) => {
   return (
     <section 
@@ -32,25 +31,31 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
       aria-label={title || label}
     >
       <div className="space-y-4">
-        {/* Section Heading */}
-        <div>
-          <span className="text-[11px] uppercase tracking-widest font-mono text-[var(--text-muted)] select-none">
-            {label}
-          </span>
+        {/* Section Heading - Mask Reveal */}
+        <div data-intro={dataIntroHeading}>
+          <ScrollReveal variant="mask-up" duration={650}>
+            <span className="inline-block text-[11px] uppercase tracking-widest font-mono text-[var(--text-muted)] select-none">
+              {label}
+            </span>
+          </ScrollReveal>
         </div>
 
-        {/* Title & Subtitle if present */}
+        {/* Title & Subtitle with progressive reveal */}
         {(title || subtitle) && (
           <div className="space-y-1">
             {title && (
-              <h2 className="text-lg sm:text-xl font-semibold tracking-tight text-[var(--text-primary)]">
-                {title}
-              </h2>
+              <ScrollReveal variant="mask-up" delay={60} duration={700}>
+                <h2 className="text-lg sm:text-xl font-semibold tracking-tight text-[var(--text-primary)]">
+                  {title}
+                </h2>
+              </ScrollReveal>
             )}
             {subtitle && (
-              <p className="text-[11px] sm:text-xs text-[var(--text-muted)] font-normal leading-relaxed">
-                {subtitle}
-              </p>
+              <ScrollReveal variant="fade-up" delay={120} duration={650}>
+                <p className="text-[11px] sm:text-xs text-[var(--text-muted)] font-normal leading-relaxed">
+                  {subtitle}
+                </p>
+              </ScrollReveal>
             )}
           </div>
         )}
@@ -63,3 +68,4 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
     </section>
   );
 };
+

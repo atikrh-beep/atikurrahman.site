@@ -1,6 +1,7 @@
 import React from 'react';
 import { TECH_ROW_TOP, TECH_ROW_BOTTOM } from '../data/portfolioData.ts';
 import { TechIcon } from './Icons.tsx';
+import { ScrollReveal } from './ScrollReveal.tsx';
 
 export const TechnologyStack: React.FC = () => {
   // Multiply rows into two identical halves to ensure a mathematically seamless, unbroken marquee sequence
@@ -20,20 +21,26 @@ export const TechnologyStack: React.FC = () => {
         Main portfolio section heading remains centered and constrained:
         Matches max-w-4xl mx-auto px-6 sm:px-8 exactly as other sections
       */}
-      <div className="w-full max-w-4xl mx-auto px-6 sm:px-8 space-y-4 mb-5">
+      <div data-intro="6" className="w-full max-w-4xl mx-auto px-6 sm:px-8 space-y-4 mb-5">
         <div>
-          <span className="text-[11px] uppercase tracking-widest font-mono text-[var(--text-muted)] select-none">
-            Technology & Stack
-          </span>
+          <ScrollReveal variant="mask-up" duration={650}>
+            <span className="inline-block text-[11px] uppercase tracking-widest font-mono text-[var(--text-muted)] select-none">
+              Technology & Stack
+            </span>
+          </ScrollReveal>
         </div>
 
         <div className="space-y-1">
-          <h2 className="text-lg sm:text-xl font-semibold tracking-tight text-[var(--text-primary)]">
-            Technologies, Platforms & Ecosystem
-          </h2>
-          <p className="text-[11px] sm:text-xs text-[var(--text-muted)] font-normal leading-relaxed">
-            Cloud infrastructure, foundational languages, and development environments.
-          </p>
+          <ScrollReveal variant="mask-up" delay={60} duration={700}>
+            <h2 className="text-lg sm:text-xl font-semibold tracking-tight text-[var(--text-primary)]">
+              Technologies, Platforms & Ecosystem
+            </h2>
+          </ScrollReveal>
+          <ScrollReveal variant="fade-up" delay={120} duration={650}>
+            <p className="text-[11px] sm:text-xs text-[var(--text-muted)] font-normal leading-relaxed">
+              Cloud infrastructure, foundational languages, and development environments.
+            </p>
+          </ScrollReveal>
         </div>
       </div>
 
@@ -45,7 +52,8 @@ export const TechnologyStack: React.FC = () => {
         - Top Row: LEFT SCREEN EDGE → RIGHT SCREEN EDGE
         - Bottom Row: RIGHT SCREEN EDGE → LEFT SCREEN EDGE
       */}
-      <div className="w-full overflow-hidden py-2 touch-pan-y">
+      <ScrollReveal variant="fade" delay={150} duration={800} className="w-full overflow-hidden py-2 touch-pan-y" data-intro="7">
+
         {/* TOP ROW: Moving Left → Right (LEFT SCREEN EDGE → RIGHT SCREEN EDGE) */}
         <div className="flex w-max animate-ticker-reverse select-none mb-2.5 touch-pan-y pointer-events-none">
           {rowTopSequence.map((item, idx) => (
@@ -79,7 +87,7 @@ export const TechnologyStack: React.FC = () => {
             </div>
           ))}
         </div>
-      </div>
+      </ScrollReveal>
     </section>
   );
 };

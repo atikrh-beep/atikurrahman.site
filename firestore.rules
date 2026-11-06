@@ -10,28 +10,12 @@ service cloud.firestore {
 
     match /portfolio_content/{contentId} {
       allow read: if true;
-      allow write: if true;
+      allow write: if isAuthAdmin() || request.auth == null;
     }
 
     match /test/connection {
       allow read: if true;
       allow write: if true;
-    }
-
-    match /portfolio_stats/{statsId} {
-      // Authenticated admin or preview read
-      allow read: if isAuthAdmin() || request.auth == null;
-
-      // Public visitors can initialize or increment totalCount
-      allow create: if request.resource.data.keys().hasAll(['totalCount']) &&
-        request.resource.data.totalCount is number;
-
-      // Public visitors can only increment totalCount by exactly 1
-      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['totalCount', 'updatedAt']) &&
-        (
-          request.resource.data.totalCount == resource.data.totalCount + 1 ||
-          isAuthAdmin()
-        );
     }
 
     match /{document=**} {

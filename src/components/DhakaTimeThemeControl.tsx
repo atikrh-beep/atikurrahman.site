@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { checkIsAdminContext, subscribeToVisitorCount } from '../services/visitorStats.ts';
-import { auth } from '../firebase.ts';
-import { onAuthStateChanged } from 'firebase/auth';
 
 interface DhakaTimeThemeControlProps {
   theme: 'dark' | 'light';
@@ -13,8 +10,6 @@ export const DhakaTimeThemeControl: React.FC<DhakaTimeThemeControlProps> = ({
   onToggleTheme,
 }) => {
   const [timeString, setTimeString] = useState<string>('');
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [visitorCount, setVisitorCount] = useState<number | null>(null);
 
   useEffect(() => {
     const updateTime = () => {
@@ -43,45 +38,9 @@ export const DhakaTimeThemeControl: React.FC<DhakaTimeThemeControlProps> = ({
     return () => clearInterval(interval);
   }, []);
 
-  // Monitor Admin authorization status
-  useEffect(() => {
-    const checkAdmin = () => {
-      setIsAdmin(checkIsAdminContext());
-    };
-    checkAdmin();
-
-    const unsubAuth = onAuthStateChanged(auth, () => {
-      checkAdmin();
-    });
-
-    const handleStorageChange = () => {
-      checkAdmin();
-    };
-    window.addEventListener('storage', handleStorageChange);
-
-    return () => {
-      unsubAuth();
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
-
-  // Only subscribe to visitor count if authorized admin
-  useEffect(() => {
-    if (!isAdmin) {
-      setVisitorCount(null);
-      return;
-    }
-
-    const unsubscribe = subscribeToVisitorCount((count) => {
-      setVisitorCount(count);
-    });
-
-    return () => unsubscribe();
-  }, [isAdmin]);
-
   return (
     <aside 
-      aria-label="Dhaka live time, theme switch, and admin controls" 
+      aria-label="Dhaka live time and theme switch" 
       className="flex flex-col items-end text-xs tracking-normal font-mono select-none"
     >
       {/* 
@@ -115,7 +74,7 @@ export const DhakaTimeThemeControl: React.FC<DhakaTimeThemeControlProps> = ({
               stroke="currentColor" 
               strokeWidth="1.75" 
               strokeLinecap="round" 
-              strokeLinejoin="round"
+              strokeLinejoin="round" 
               aria-hidden="true"
             >
               <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
@@ -129,7 +88,7 @@ export const DhakaTimeThemeControl: React.FC<DhakaTimeThemeControlProps> = ({
               stroke="currentColor" 
               strokeWidth="1.75" 
               strokeLinecap="round" 
-              strokeLinejoin="round"
+              strokeLinejoin="round" 
               aria-hidden="true"
             >
               <circle cx="12" cy="12" r="4" />
@@ -145,20 +104,7 @@ export const DhakaTimeThemeControl: React.FC<DhakaTimeThemeControlProps> = ({
           )}
         </button>
       </div>
-
-      {/* 
-        ADMIN ONLY:
-        Visitor Count displayed directly below Dhaka time & theme switcher.
-        Normal public visitors NEVER see this element.
-      */}
-      {isAdmin && visitorCount !== null && (
-        <div 
-          className="text-[10px] sm:text-[11px] font-mono text-[var(--text-muted)] tracking-tight mt-0.5 animate-fade-in"
-          aria-label={`Visitor count: ${visitorCount}`}
-        >
-          Visitors: {visitorCount}
-        </div>
-      )}
     </aside>
   );
 };
+

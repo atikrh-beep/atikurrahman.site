@@ -22,6 +22,35 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- Zero FOUC: Set intro-pending class before React loads -->
+    <script>
+      (function() {
+        try {
+          var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!prefersReduced) {
+            document.documentElement.classList.add('intro-pending');
+          }
+        } catch (e) {
+        } finally {
+          // Hard safety timeout of 6 seconds: always remove intro-pending if anything takes too long
+          setTimeout(function() {
+            try {
+              document.documentElement.classList.remove('intro-pending');
+            } catch (_) {}
+          }, 6000);
+        }
+      })();
+    </script>
+    <noscript>
+      <style>
+        html.intro-pending [data-intro] {
+          opacity: 1 !important;
+          transform: none !important;
+          filter: none !important;
+        }
+      </style>
+    </noscript>
+
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
     {

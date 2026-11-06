@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useReveal } from '../context/RevealContext.tsx';
 import {
   PentagonHomeIcon,
   OutlinedNotepadIcon,
@@ -25,8 +26,10 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
   currentView,
   onNavigate,
 }) => {
+  const { isSiteLoaded } = useReveal();
   const [activeSection, setActiveSection] = useState<NavTarget>('home');
   const [hoveredItem, setHoveredItem] = useState<NavTarget | null>(null);
+
 
   // References to dock and buttons for exact position calculation
   const dockRef = useRef<HTMLDivElement>(null);
@@ -150,7 +153,13 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
     <nav
       role="navigation"
       aria-label="Primary navigation dock"
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 select-none"
+      className="fixed bottom-6 left-1/2 z-50 select-none pointer-events-auto"
+      style={{
+        transform: isSiteLoaded ? 'translate3d(-50%, 0, 0)' : 'translate3d(-50%, 28px, 0)',
+        opacity: isSiteLoaded ? 1 : 0,
+        transition: 'transform 750ms cubic-bezier(0.16, 1, 0.3, 1) 350ms, opacity 750ms cubic-bezier(0.16, 1, 0.3, 1) 350ms',
+        willChange: 'transform, opacity',
+      }}
     >
       {/* 
         BOTTOM NAVIGATION DOCK

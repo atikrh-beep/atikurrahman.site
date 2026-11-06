@@ -69,6 +69,47 @@ export const isUserAdmin = (user: User | null): boolean => {
   );
 };
 
+/**
+ * Checks whether the current session is an admin panel or authorized admin user.
+ */
+export function checkIsAdminContext(): boolean {
+  if (typeof window === 'undefined') return false;
+
+  // 1. Authenticated Firebase admin user
+  if (auth.currentUser && isUserAdmin(auth.currentUser)) {
+    return true;
+  }
+
+  // 2. Explicit admin URL parameters or stored admin session
+  try {
+    const queryParams = new URLSearchParams(window.location.search);
+    if (
+      queryParams.has('admin') ||
+      queryParams.has('edit') ||
+      queryParams.has('editor')
+    ) {
+      return true;
+    }
+
+    if (localStorage.getItem('portfolio_editor_enabled') === 'true') {
+      return true;
+    }
+  } catch (_) {}
+
+  // 3. Dev / Studio preview environment
+  const hostname = window.location.hostname;
+  if (
+    hostname.includes('ais-dev') ||
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    import.meta.env.DEV
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
 // Global Cloud Portfolio Profile Schema
 export interface CloudProfileContent {
   photoUrl: string | null;

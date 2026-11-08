@@ -19,12 +19,65 @@
         }
       },
       "required": ["updatedAt"]
+    },
+    "Note": {
+      "title": "Note",
+      "description": "Technical study note and learning guide with ordered multi-format blocks",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "slug": { "type": "string" },
+        "shortDescription": { "type": "string" },
+        "category": { "type": "string" },
+        "coverImage": { "type": "string" },
+        "blocks": { "type": "array" },
+        "status": { "type": "string", "enum": ["draft", "published"] },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" },
+        "publishedAt": { "type": "number" },
+        "authorEmail": { "type": "string" }
+      },
+      "required": ["title", "slug", "status", "createdAt", "updatedAt"]
+    },
+    "RoboticsProject": {
+      "title": "Robotics Project",
+      "description": "IoT, robotics, and hardware engineering build with ordered blocks and specifications",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "slug": { "type": "string" },
+        "shortDescription": { "type": "string" },
+        "fullDescription": { "type": "string" },
+        "category": { "type": "string" },
+        "period": { "type": "string" },
+        "difficulty": { "type": "string" },
+        "status": { "type": "string" },
+        "coverImage": { "type": "string" },
+        "hardware": { "type": "array" },
+        "software": { "type": "array" },
+        "circuitNotes": { "type": "string" },
+        "githubUrl": { "type": "string" },
+        "blocks": { "type": "array" },
+        "isPublished": { "type": "boolean" },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" },
+        "authorEmail": { "type": "string" }
+      },
+      "required": ["title", "slug", "status", "isPublished", "createdAt", "updatedAt"]
     }
   },
   "firestore": {
     "/portfolio_content/{contentId}": {
       "schema": "ProfileContent",
       "description": "Global portfolio configuration and public content documents"
+    },
+    "/notes/{noteId}": {
+      "schema": "Note",
+      "description": "Admin notes with ordered content blocks and draft/published states"
+    },
+    "/robotics_projects/{projectId}": {
+      "schema": "RoboticsProject",
+      "description": "IoT & Robotics documented projects with hardware specs and ordered content blocks"
     }
   }
 }

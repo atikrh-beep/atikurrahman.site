@@ -1,243 +1,266 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useReveal } from '../context/RevealContext.tsx';
+import { useRouter, AppRoute } from '../context/RouterContext.tsx';
 import {
-  PentagonHomeIcon,
-  OutlinedNotepadIcon,
-  CodePracticeNavIcon,
-  MinimalPersonIcon,
-  MinimalAtSymbolIcon,
-} from './Icons.tsx';
+  Home,
+  Clipboard,
+  Code,
+  Laptop,
+  AtSign,
+} from 'lucide-react';
 
-export type NavTarget = 'home' | 'about' | 'programming' | 'stack' | 'achievements';
+export type NavTarget = AppRoute | 'contact';
 
-interface BottomNavigationProps {
-  currentView: 'home' | 'programming';
-  onNavigate: (target: NavTarget) => void;
-}
-
-interface NavItem {
+interface NavItemConfig {
   id: NavTarget;
-  label: string;
   tooltip: string;
   icon: React.ReactNode;
+  routeMatch?: AppRoute;
 }
 
-export const BottomNavigation: React.FC<BottomNavigationProps> = ({
-  currentView,
-  onNavigate,
-}) => {
-  const { isSiteLoaded } = useReveal();
-  const [activeSection, setActiveSection] = useState<NavTarget>('home');
+const PORTFOLIO_COPY_URL = 'https://atikurrahmansite.vercel.app/';
+
+export const BottomNavigation: React.FC = () => {
+  const { activeRoute, navigate } = useRouter();
   const [hoveredItem, setHoveredItem] = useState<NavTarget | null>(null);
+  const [showTopNotification, setShowTopNotification] = useState<boolean>(false);
 
-
-  // References to dock and buttons for exact position calculation
   const dockRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [indicatorLeft, setIndicatorLeft] = useState<number | null>(null);
+  const [isIndicatorVisible, setIsIndicatorVisible] = useState<boolean>(false);
+  const copyTimeoutRef = useRef<number | null>(null);
 
-  // Monitor active section using IntersectionObserver
-  useEffect(() => {
-    if (currentView === 'programming') {
-      setActiveSection('programming');
-      return;
-    }
-
-    const sectionIds: ('home' | 'about' | 'stack' | 'achievements')[] = [
-      'home',
-      'about',
-      'stack',
-      'achievements',
-    ];
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntries = entries.filter((e) => e.isIntersecting);
-        if (visibleEntries.length > 0) {
-          visibleEntries.sort((a, b) => {
-            const indexA = sectionIds.indexOf(a.target.id as any);
-            const indexB = sectionIds.indexOf(b.target.id as any);
-            return indexA - indexB;
-          });
-          const activeId = visibleEntries[0].target.id as NavTarget;
-          setActiveSection((prev) => (prev === activeId ? prev : activeId));
-        }
-      },
-      {
-        rootMargin: '-20% 0px -40% 0px',
-        threshold: 0.1,
-      }
-    );
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) {
-        observer.observe(el);
-      }
-    });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [currentView]);
-
-  const navItems: NavItem[] = [
+  // Exactly five icons in required order:
+  // 1. Home
+  // 2. Notes
+  // 3. Code
+  // 4. IoT & Robotics (Laptop)
+  // 5. Contact (@)
+  const navItems: NavItemConfig[] = [
     {
       id: 'home',
-      label: 'Home',
       tooltip: 'Home',
-      icon: <PentagonHomeIcon className="w-4 h-4" />,
+      routeMatch: 'home',
+      icon: <Home className="w-[18px] h-[18px] sm:w-[19px] sm:h-[19px]" strokeWidth={1.8} />,
     },
     {
-      id: 'about',
-      label: 'About',
-      tooltip: 'About',
-      icon: <OutlinedNotepadIcon className="w-4 h-4" />,
+      id: 'notes',
+      tooltip: 'Notes',
+      routeMatch: 'notes',
+      icon: <Clipboard className="w-[18px] h-[18px] sm:w-[19px] sm:h-[19px]" strokeWidth={1.8} />,
     },
     {
-      id: 'programming',
-      label: 'Programming',
-      tooltip: 'Programming',
-      icon: <CodePracticeNavIcon className="w-4 h-4" />,
+      id: 'code',
+      tooltip: 'Code',
+      routeMatch: 'code',
+      icon: <Code className="w-[18px] h-[18px] sm:w-[19px] sm:h-[19px]" strokeWidth={1.8} />,
     },
     {
-      id: 'stack',
-      label: 'Technology & Stack',
-      tooltip: 'Technology & Stack',
-      icon: <MinimalPersonIcon className="w-4 h-4" />,
+      id: 'robotics',
+      tooltip: 'IoT & Robotics',
+      routeMatch: 'robotics',
+      icon: <Laptop className="w-[18px] h-[18px] sm:w-[19px] sm:h-[19px]" strokeWidth={1.8} />,
     },
     {
-      id: 'achievements',
-      label: 'Achievement',
-      tooltip: 'Achievement',
-      icon: <MinimalAtSymbolIcon className="w-4 h-4" />,
+      id: 'contact',
+      tooltip: 'Contact',
+      icon: <AtSign className="w-[18px] h-[18px] sm:w-[19px] sm:h-[19px]" strokeWidth={1.8} />,
     },
   ];
 
-  // The single target for the sliding ball:
-  // Glides to whichever navigation icon the cursor is placed on.
-  // Defaults to the active section / home.
-  const currentTarget: NavTarget =
-    hoveredItem || (currentView === 'programming' ? 'programming' : activeSection) || 'home';
+  // Active route target
+  const activeTarget: NavTarget | null = 
+    activeRoute === 'home' || activeRoute === 'notes' || activeRoute === 'code' || activeRoute === 'robotics'
+      ? activeRoute
+      : null;
 
-  // Compute exact center position under the target icon using bounding rectangles
-  const updateIndicatorPosition = useCallback(() => {
-    const index = navItems.findIndex((item) => item.id === currentTarget);
-    if (index !== -1) {
-      const dockEl = dockRef.current;
-      const buttonEl = itemRefs.current[index];
-      if (dockEl && buttonEl) {
-        const dockRect = dockEl.getBoundingClientRect();
+  // The indicator smoothly follows the hovered icon, returning to the active icon on mouse leave
+  const currentTarget: NavTarget | null = hoveredItem || activeTarget;
+
+  // Compute horizontal center position of the single circular indicator dot
+  const updateDotPosition = useCallback(() => {
+    if (!currentTarget || !dockRef.current) {
+      setIsIndicatorVisible(false);
+      return;
+    }
+
+    const targetIndex = navItems.findIndex((item) => item.id === currentTarget);
+
+    if (targetIndex !== -1) {
+      const buttonEl = itemRefs.current[targetIndex];
+      if (buttonEl) {
+        const dockRect = dockRef.current.getBoundingClientRect();
         const btnRect = buttonEl.getBoundingClientRect();
         const center = btnRect.left - dockRect.left + btnRect.width / 2;
         setIndicatorLeft(center);
+        setIsIndicatorVisible(true);
+        return;
       }
     }
+
+    setIsIndicatorVisible(false);
   }, [currentTarget, navItems]);
 
-  // Update position on mount and whenever currentTarget changes
   useEffect(() => {
-    updateIndicatorPosition();
-  }, [updateIndicatorPosition]);
+    updateDotPosition();
+  }, [updateDotPosition]);
 
-  // Recalculate position on window resize
   useEffect(() => {
-    const handleResize = () => {
-      updateIndicatorPosition();
-    };
+    const handleResize = () => updateDotPosition();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [updateIndicatorPosition]);
+  }, [updateDotPosition]);
+
+  // Robust Clipboard copy handler for @ contact icon:
+  // Copies URL, and triggers the top-of-screen notification only on success
+  const handleCopyContact = async () => {
+    if (copyTimeoutRef.current) {
+      window.clearTimeout(copyTimeoutRef.current);
+    }
+
+    let success = false;
+
+    if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(PORTFOLIO_COPY_URL);
+        success = true;
+      } catch (_) {
+        success = false;
+      }
+    }
+
+    // Fallback using textarea for iframe environments
+    if (!success) {
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = PORTFOLIO_COPY_URL;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-9999px';
+        textArea.style.top = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        success = document.execCommand('copy');
+        document.body.removeChild(textArea);
+      } catch (_) {
+        success = false;
+      }
+    }
+
+    // Show top-center notification ONLY upon successful clipboard copying
+    if (success) {
+      setShowTopNotification(true);
+      copyTimeoutRef.current = window.setTimeout(() => {
+        setShowTopNotification(false);
+      }, 2000);
+    }
+  };
+
+  const handleItemClick = (item: NavItemConfig) => {
+    switch (item.id) {
+      case 'home':
+        navigate('/');
+        break;
+      case 'notes':
+        navigate('/notes');
+        break;
+      case 'code':
+        navigate('/code');
+        break;
+      case 'robotics':
+        navigate('/robotics');
+        break;
+      case 'contact':
+        handleCopyContact();
+        break;
+    }
+  };
 
   return (
-    <nav
-      role="navigation"
-      aria-label="Primary navigation dock"
-      className="fixed bottom-6 left-1/2 z-50 select-none pointer-events-auto"
-      style={{
-        transform: isSiteLoaded ? 'translate3d(-50%, 0, 0)' : 'translate3d(-50%, 28px, 0)',
-        opacity: isSiteLoaded ? 1 : 0,
-        transition: 'transform 750ms cubic-bezier(0.16, 1, 0.3, 1) 350ms, opacity 750ms cubic-bezier(0.16, 1, 0.3, 1) 350ms',
-        willChange: 'transform, opacity',
-      }}
-    >
-      {/* 
-        BOTTOM NAVIGATION DOCK
-        Contains: Home | About | Programming | Technology & Stack | Achievement
-        Features exactly ONE sliding moving ball just below the navigation icons.
-        Whenever the cursor is placed at any icon, the ball slides smoothly to that icon.
-      */}
-      <div 
-        ref={dockRef}
-        onMouseLeave={() => setHoveredItem(null)}
-        className="relative flex items-center gap-1 sm:gap-2 px-3 pt-2 pb-3 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)]/90 backdrop-blur-md shadow-lg shadow-black/20"
+    <>
+      {/* Top-of-screen notification after successful clipboard copy */}
+      {showTopNotification && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed top-5 sm:top-6 left-1/2 -translate-x-1/2 z-[100] px-4 py-2 rounded-full border border-[var(--border-hover)] bg-[var(--bg-surface-elevated)]/95 text-[var(--text-primary)] text-xs font-mono font-medium shadow-xl shadow-black/10 backdrop-blur-md flex items-center gap-2 animate-fade-in pointer-events-none select-none"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+          <span>Copied to clipboard</span>
+        </div>
+      )}
+
+      {/* Compact Floating Navigation Capsule */}
+      <nav
+        role="navigation"
+        aria-label="Floating Navigation Capsule"
+        className="fixed bottom-5 sm:bottom-6 left-1/2 z-50 select-none pointer-events-auto -translate-x-1/2"
       >
-        {navItems.map((item, index) => {
-          const isActive =
-            currentView === 'programming'
-              ? item.id === 'programming'
-              : activeSection === item.id;
+        <div 
+          ref={dockRef}
+          onMouseLeave={() => setHoveredItem(null)}
+          className="relative flex items-center gap-0.5 sm:gap-1 px-2 py-1 sm:px-2.5 sm:py-1 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)]/85 backdrop-blur-md shadow-lg shadow-black/20"
+        >
+          {navItems.map((item, index) => {
+            const isActive = item.routeMatch && activeRoute === item.routeMatch;
+            const isHovered = hoveredItem === item.id;
 
-          return (
-            <div key={item.id} className="relative flex flex-col items-center">
-              {hoveredItem === item.id && (
-                <div 
-                  role="tooltip" 
-                  className="absolute -top-9 px-2 py-1 text-[11px] font-mono tracking-tight text-[var(--text-primary)] bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] rounded shadow-md pointer-events-none whitespace-nowrap animate-fade-in"
+            return (
+              <div key={item.id} className="relative flex flex-col items-center">
+                {/* Elegant plain text tooltip above hovered icon */}
+                {isHovered && (
+                  <div
+                    role="tooltip"
+                    className="absolute -top-7 sm:-top-8 left-1/2 -translate-x-1/2 text-[11px] font-mono font-medium tracking-tight text-[var(--text-primary)] pointer-events-none whitespace-nowrap animate-fade-in drop-shadow-sm select-none"
+                  >
+                    {item.tooltip}
+                  </div>
+                )}
+
+                <button
+                  ref={(el) => {
+                    itemRefs.current[index] = el;
+                  }}
+                  type="button"
+                  onClick={() => handleItemClick(item)}
+                  onMouseEnter={() => setHoveredItem(item.id)}
+                  onMouseMove={() => setHoveredItem(item.id)}
+                  onFocus={() => setHoveredItem(item.id)}
+                  onBlur={() => setHoveredItem(null)}
+                  aria-label={item.tooltip}
+                  className={`relative w-8 h-8 sm:w-[34px] sm:h-[34px] rounded-full inline-flex items-center justify-center transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--text-primary)] ${
+                    isActive
+                      ? 'text-[var(--text-primary)]'
+                      : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                  }`}
                 >
-                  {item.tooltip}
-                </div>
-              )}
-              <button
-                ref={(el) => {
-                  itemRefs.current[index] = el;
-                  if (indicatorLeft === null && item.id === 'home' && el && dockRef.current) {
-                    const dockRect = dockRef.current.getBoundingClientRect();
-                    const btnRect = el.getBoundingClientRect();
-                    setIndicatorLeft(btnRect.left - dockRect.left + btnRect.width / 2);
-                  }
-                }}
-                type="button"
-                onClick={() => {
-                  setActiveSection(item.id);
-                  onNavigate(item.id);
-                }}
-                onMouseEnter={() => setHoveredItem(item.id)}
-                onMouseMove={() => setHoveredItem(item.id)}
-                onFocus={() => setHoveredItem(item.id)}
-                onBlur={() => setHoveredItem(null)}
-                aria-label={item.label}
-                className={`p-2 rounded-full transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--text-primary)] ${
-                  isActive
-                    ? 'text-[var(--text-primary)] bg-[var(--accent-tint)]'
-                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--accent-tint)]'
-                }`}
-              >
-                {item.icon}
-              </button>
-            </div>
-          );
-        })}
+                  {item.icon}
+                </button>
+              </div>
+            );
+          })}
 
-        {/* 
-          SLIDING MOVING BALL
-          - Placed just below the navigation icons (bottom-1.5)
-          - Moves fluidly horizontally whenever the cursor is placed on any icon
-          - Small circular dot with subtle muted theme color (var(--text-muted))
-          - Exactly ONE ball at all times
-        */}
-        {indicatorLeft !== null && (
-          <span
-            aria-hidden="true"
-            className="absolute bottom-1.5 w-1.5 h-1.5 rounded-full bg-[var(--text-muted)] pointer-events-none"
-            style={{
-              left: `${indicatorLeft}px`,
-              transform: 'translateX(-50%)',
-              transition: 'left 250ms cubic-bezier(0.2, 0.8, 0.2, 1)',
-            }}
-          />
-        )}
-      </div>
-    </nav>
+          {/* 
+            ANIMATED HOVER INDICATOR
+            - A single small circular dot beneath the icons
+            - Smoothly follows cursor as it moves between icons
+            - Returns to the active route item when cursor leaves the capsule
+            - Exactly ONE dot at all times
+          */}
+          {indicatorLeft !== null && (
+            <span
+              aria-hidden="true"
+              className="absolute bottom-1 w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-[var(--text-primary)] pointer-events-none"
+              style={{
+                left: `${indicatorLeft}px`,
+                transform: 'translateX(-50%)',
+                opacity: isIndicatorVisible ? 1 : 0,
+                transition: 'left 220ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 150ms ease',
+              }}
+            />
+          )}
+        </div>
+      </nav>
+    </>
   );
 };

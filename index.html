@@ -22,34 +22,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Zero FOUC: Set intro-pending class before React loads -->
+    <!-- Immediate Theme Initialization (prevents flash of wrong theme) -->
     <script>
       (function() {
         try {
-          var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          if (!prefersReduced) {
-            document.documentElement.classList.add('intro-pending');
+          var saved = localStorage.getItem('portfolio-theme');
+          var theme = saved || 'dark';
+          if (theme === 'light') {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+          } else {
+            document.documentElement.classList.remove('light');
+            document.documentElement.classList.add('dark');
           }
-        } catch (e) {
-        } finally {
-          // Hard safety timeout of 6 seconds: always remove intro-pending if anything takes too long
-          setTimeout(function() {
-            try {
-              document.documentElement.classList.remove('intro-pending');
-            } catch (_) {}
-          }, 6000);
-        }
+        } catch (_) {}
       })();
     </script>
-    <noscript>
-      <style>
-        html.intro-pending [data-intro] {
-          opacity: 1 !important;
-          transform: none !important;
-          filter: none !important;
-        }
-      </style>
-    </noscript>
 
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
@@ -74,8 +62,7 @@
       }
     }
     </script>
-  </head>
-  <body class="bg-[#1B1A18] text-[#D6D0C5] antialiased selection:bg-[#F5F1E8]/20 selection:text-[#F5F1E8]">
+  <body class="bg-[var(--bg-page)] text-[var(--text-body)] antialiased selection:bg-[var(--text-primary)]/20 selection:text-[var(--text-primary)]">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -1,29 +1,20 @@
 import React from 'react';
+import { useTheme } from '../context/ThemeContext.tsx';
 
 interface AtmosphericCloudOverlayProps {
-  theme: 'dark' | 'light';
+  theme?: 'dark' | 'light';
 }
 
-/**
- * AtmosphericCloudOverlay
- * 
- * Provides an ultra-soft, completely smooth atmospheric mist at the top
- * and bottom edges of the viewport:
- * - NO full-page overlay: only two shallow, separate edge strips (top and bottom).
- * - Center of the screen (~85-90% of screen) has ZERO overlay in the DOM.
- * - Both edges have `pointer-events-none` and `touch-action: none` (CSS and inline style)
- *   so they NEVER capture wheel, touch, or click gestures.
- * - Completely symmetrical soft haze in both Dark and Light modes.
- * - Smooth CSS color transition on theme change.
- */
-export const AtmosphericCloudOverlay: React.FC<AtmosphericCloudOverlayProps> = ({ theme }) => {
+export const AtmosphericCloudOverlay: React.FC<AtmosphericCloudOverlayProps> = ({ theme: propTheme }) => {
+  const contextTheme = useTheme();
+  const theme = propTheme || contextTheme.theme;
   const isDark = theme === 'dark';
 
   // Matching exact portfolio page background CSS variables
-  // Dark: #1B1A18, Light: #F7F3EA
-  const edgeColor = isDark ? '#1B1A18' : '#F7F3EA';
-  const midColor = isDark ? 'rgba(27, 26, 24, 0.72)' : 'rgba(247, 243, 234, 0.72)';
-  const softColor = isDark ? 'rgba(27, 26, 24, 0.28)' : 'rgba(247, 243, 234, 0.28)';
+  // Dark: #121316, Light: #F7F3EA
+  const edgeColor = isDark ? '#121316' : '#F7F3EA';
+  const midColor = isDark ? 'rgba(18, 19, 22, 0.72)' : 'rgba(247, 243, 234, 0.72)';
+  const softColor = isDark ? 'rgba(18, 19, 22, 0.28)' : 'rgba(247, 243, 234, 0.28)';
 
   return (
     <>

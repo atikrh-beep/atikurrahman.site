@@ -21,7 +21,7 @@ export const TechnologyStack: React.FC = () => {
         Main portfolio section heading remains centered and constrained:
         Matches max-w-4xl mx-auto px-6 sm:px-8 exactly as other sections
       */}
-      <div data-intro="6" className="w-full max-w-4xl mx-auto px-6 sm:px-8 space-y-4 mb-5">
+      <div className="w-full max-w-4xl mx-auto px-6 sm:px-8 space-y-4 mb-5">
         <div>
           <ScrollReveal variant="mask-up" duration={650}>
             <span className="inline-block text-[11px] uppercase tracking-widest font-mono text-[var(--text-muted)] select-none">
@@ -52,7 +52,7 @@ export const TechnologyStack: React.FC = () => {
         - Top Row: LEFT SCREEN EDGE → RIGHT SCREEN EDGE
         - Bottom Row: RIGHT SCREEN EDGE → LEFT SCREEN EDGE
       */}
-      <ScrollReveal variant="fade" delay={150} duration={800} className="w-full overflow-hidden py-2 touch-pan-y" data-intro="7">
+      <ScrollReveal variant="fade" delay={150} duration={800} className="w-full overflow-hidden py-2 touch-pan-y">
 
         {/* TOP ROW: Moving Left → Right (LEFT SCREEN EDGE → RIGHT SCREEN EDGE) */}
         <div className="flex w-max animate-ticker-reverse select-none mb-2.5 touch-pan-y pointer-events-none">

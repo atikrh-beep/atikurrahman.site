@@ -7,10 +7,8 @@ export const Achievements: React.FC = () => {
   return (
     <SectionContainer
       id="achievements"
-      label="Achievements"
       title="Contests, Workshops & Commitments"
       subtitle="Competitive programming finals, applied hardware labs, and active club involvement."
-      dataIntroHeading="8"
     >
       {/* Clean Editorial List Layout with subtle staggered scroll reveal */}
       <div className="space-y-4">
@@ -22,7 +20,6 @@ export const Achievements: React.FC = () => {
             duration={650}
           >
             <div 
-              data-intro={idx === 0 ? "9" : undefined}
               className="p-5 sm:p-6 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:border-[var(--border-hover)] transition-colors duration-200"
             >
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-4 mb-1.5">

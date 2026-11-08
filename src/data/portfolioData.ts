@@ -31,37 +31,56 @@ export const UNIVERSITY_DEPARTMENT = 'Computer Science and Engineering';
 // 2. EDITABLE EXTERNAL URLs & PLATFORMS
 // ==========================================
 
-// Social links in required order: Instagram → GitHub → LinkedIn → Facebook → WhatsApp
-export const SOCIAL_LINKS: SocialLink[] = [
+export interface SocialNavItem {
+  id: 'instagram' | 'discord' | 'github' | 'linkedin' | 'facebook' | 'whatsapp';
+  name: string;
+  url: string;
+  isConfigured?: boolean;
+}
+
+// Exactly six social platforms in required order:
+// 1. Instagram
+// 2. Discord (Public contact / profile destination)
+// 3. GitHub
+// 4. LinkedIn
+// 5. Facebook
+// 6. WhatsApp
+export const SOCIAL_NAV_ITEMS: SocialNavItem[] = [
   {
     id: 'instagram',
     name: 'Instagram',
-    url: 'https://instagram.com/', // Replace with your Instagram profile URL
-    isPlaceholder: true,
+    url: 'https://instagram.com/',
+    isConfigured: true,
+  },
+  {
+    id: 'discord',
+    name: 'Discord',
+    url: 'https://discord.gg/8f4KMqXag',
+    isConfigured: true,
   },
   {
     id: 'github',
     name: 'GitHub',
     url: 'https://github.com/atikrh-beep',
-    isPlaceholder: false,
+    isConfigured: true,
   },
   {
     id: 'linkedin',
     name: 'LinkedIn',
     url: 'https://bd.linkedin.com/in/md-atikur-rahman-4874aa299',
-    isPlaceholder: false,
+    isConfigured: true,
   },
   {
     id: 'facebook',
     name: 'Facebook',
-    url: 'https://facebook.com/', // Replace with your Facebook profile URL
-    isPlaceholder: true,
+    url: 'https://facebook.com/',
+    isConfigured: true,
   },
   {
     id: 'whatsapp',
     name: 'WhatsApp',
-    url: 'https://wa.me/', // Replace with your WhatsApp link (e.g. https://wa.me/8801...)
-    isPlaceholder: true,
+    url: 'https://wa.me/',
+    isConfigured: true,
   },
 ];
 
@@ -69,8 +88,6 @@ export const SOCIAL_LINKS: SocialLink[] = [
 export const BIGCROWD_URL = 'https://bigcrowd.io/';
 export const TOPH_URL = 'https://toph.co/u/Atikrh99';
 export const AWS_URL = 'https://aws.amazon.com/';
-
-// Private Discord invite URL
 export const DISCORD_INVITE_URL = 'https://discord.gg/8f4KMqXag';
 
 // ==========================================

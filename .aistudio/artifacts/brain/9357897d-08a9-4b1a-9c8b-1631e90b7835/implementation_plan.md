@@ -1,115 +1,44 @@
-# Implementation Plan — Admin Visitor Management & Rebuilt Website Reveal System
+# Implementation Plan — Floating Glass Social Pill & Circle Reveal Theme Transition
 
-Implement a secure, admin-only Visitor Management system with optional Google Sign-In visitor identification, and rebuild the website reveal animation system featuring a 1.5-second editorial loading screen, coordinated entrance reveal, and continuous scroll reveal.
-
----
-
-## 1. Architecture & Proposed Changes
-
-### Part 1: Admin-Only Visitor Management
-
-#### A. Database Schema (`firebase-blueprint.json` & `firestore.rules`)
-- **Preserve Existing Counter:** Keep `portfolio_stats/visitors` (`totalCount: number`, `updatedAt: number`) for tracking public anonymous visits.
-- **Identified Visitors Collection:** Introduce `identified_visitors/{visitorUid}`:
-  - `uid`: string (matches `request.auth.uid`)
-  - `name`: string (Google profile name)
-  - `email`: string (Google email address)
-  - `photoUrl`: string (optional Google avatar)
-  - `identifiedAt`: number (timestamp)
-  - `consentGiven`: boolean (`true`)
-- **Security Rules (`firestore.rules`):**
-  - `isAuthAdmin()`: Only authenticated admin can `read` (list/get) and `delete` identified visitor records.
-  - Public / Identified visitor: Can only `create` or `update` their own record (`request.auth.uid == visitorUid`), verifying non-empty name/email, `consentGiven == true`, and prevents reading or enumerating other visitors' records.
-  - Deploy rules via `deploy_firebase` or Firestore RPC.
-
-#### B. Services (`src/services/visitorStats.ts`)
-- `recordPublicVisit()`: Existing robust visit counter (prevents double-counting from React StrictMode/re-renders, skips admin sessions).
-- `identifyVisitorWithGoogle()`: Authenticates via Google Sign-In popup with explicit consent; saves name, email, and timestamp to `identified_visitors/{uid}`.
-- `subscribeToIdentifiedVisitors(callback)`: Real-time listener for the admin to view all identified visitors.
-- `deleteIdentifiedVisitor(id: string)`: Admin-only deletion capability.
-
-#### C. User Interface
-- **Public Portfolio (Footer Placement):**
-  - In `Footer.tsx`, place a subtle, minimal text button beside the copyright:
-    - Default: `Identify as visitor`
-    - If already identified: `Identified as [First Name]` with an option to sign out / clear.
-  - Clicking opens a privacy consent modal:
-    > "Identify yourself as a visitor. By signing in with Google, your permitted name and email address will be visible exclusively to Atikur Rahman in his private admin panel."
-    > [Sign in with Google] [Cancel]
-- **Admin Section (Top-Right Badge Placement):**
-  - In `DhakaTimeThemeControl.tsx`, the `Visitors: {count}` indicator is styled as an interactive admin badge with hover feedback and a subtle indicator icon.
-  - Clicking the badge opens the **Admin Visitor Management Modal**:
-    - **Header:** "Visitors" & close button
-    - **Summary Metric Cards:**
-      - Total Visits: `250`
-      - Identified Visitors: `18`
-    - **Identified Visitors Table:**
-      - Columns: Name | Email | Date | Actions
-      - Clean editorial styling matching the dark/light palette
-      - Delete button with confirmation
-      - Empty state if no visitors have voluntarily identified themselves yet
+Status: **Completed & Verified**
 
 ---
 
-### Part 2: Fix & Rebuild Complete Website Reveal System
-
-#### A. Initial Loading Screen (`src/components/InitialLoader.tsx`)
-- Appears on public website entrance and refresh for ~1.5 seconds.
-- Does not re-trigger when navigating views ('home' vs 'programming') or in admin sessions.
-- **Editorial Design:**
-  - Full-screen matching warm dark/light theme (`--bg-page`).
-  - Name "Atikur Rahman" centered with refined typography and subtle vertical mask unmasking.
-  - Understated thin horizontal progress line (0% to 100% over 1.4s) centered beneath the name.
-  - Smooth fade/clip transition out at 1.5s, handing off to the entrance reveal.
-
-#### B. Coordinated Website Entrance Reveal
-- Coordinated via a lightweight `LoaderStateContext` or entrance state in `App.tsx`:
-  1. **T = 0ms (after loader dismiss):** Main layout unmasks.
-  2. **T = 100ms:** SiteHeader (Dhaka time & theme control) slides softly into view.
-  3. **T = 200ms:** Hero photo container and name "Atikur Rahman" unmask vertically with mask-up clip.
-  4. **T = 350ms:** Tagline and headline fade in.
-  5. **T = 450ms:** Fixed bottom navigation dock smoothly rises into position from the bottom, with its sliding indicator ball active and intact.
-
-#### C. Continuous Scroll Reveal (`src/components/ScrollReveal.tsx`)
-- Resolve the initial viewport bug (preventing immediate static rendering without transition).
-- Ensure elements that enter viewport progressively uncover with:
-  - Vertical mask-up for titles and section headings.
-  - Subtle 14px upward drift with cubic-bezier easing for body text and cards.
-  - Staggered reveals for cards in Achievements, Skills, and Programming.
-  - Single-trigger observer (`once: true`) so revealed elements stay permanently visible on scroll-up/down.
-  - Strict preservation of the floating technology ticker (speed, continuous motion, full-bleed 100vw).
-  - Respect `prefers-reduced-motion: reduce`.
+## 1. Floating Glass Social Pill (`src/components/GlassSocialPill.tsx` & `src/components/About.tsx`)
+- **Location & Alignment**:
+  - Rendered directly inside the **About section** (`src/components/About.tsx`), replacing the old chips row and separate Private Discord button.
+  - Left-aligned exactly with the "ABOUT" label and paragraph above it.
+  - Wrapper classes: `flex justify-start w-fit`, with `space-y-6` providing 24px vertical spacing below the paragraph.
+  - No centering classes (`mx-auto`, `justify-center`, or `text-center`) used on the pill or its wrapper.
+- **Contents (5 items in exact required order)**:
+  1. **Instagram** (`InstagramIcon`): `https://instagram.com/`
+  2. **GitHub** (`GitHubIcon`): `https://github.com/atikrh-beep`
+  3. **LinkedIn** (`LinkedInIcon`): `https://bd.linkedin.com/in/md-atikur-rahman-4874aa299`
+  4. **Facebook** (`FacebookIcon`): `https://facebook.com/`
+  5. **WhatsApp** (`WhatsAppIcon`): `https://wa.me/`
+- **Glass Aesthetics**:
+  - Fully rounded capsule with 4px padding and 2px gap.
+  - Dark theme: `background: rgba(255,255,255,0.06)`, `border: 1px solid rgba(255,255,255,0.12)`, `backdrop-filter: blur(16px) saturate(1.4)`, inner highlight `inset 0 1px 0 rgba(255,255,255,0.14)`, shadow `0 10px 30px rgba(0,0,0,0.35)`.
+  - Light theme: `background: rgba(0,0,0,0.04)`, `border: 1px solid rgba(0,0,0,0.10)`, inner highlight `inset 0 1px 0 rgba(255,255,255,0.6)`, shadow `0 10px 24px rgba(0,0,0,0.06)`.
+- **Magnetic Effect**:
+  - Items lean 30% toward the cursor when within a 70px radius of the item's center.
+  - Smooth reset to 0 with `250ms cubic-bezier(.3,.8,.2,1)` on pointer leave.
+  - Automatically disabled on touch devices and when `prefers-reduced-motion` is enabled.
+- **Mobile Responsive**:
+  - Below 640px, text labels are hidden (`hidden sm:inline`) while keeping 16px icons and `aria-label`s on real `<a>` tags.
+  - Fits comfortably within all screen widths down to 320px without horizontal overflow.
 
 ---
 
-## 2. Strict Design Preservations
-- **No changes to:** colors, typography, layout container widths, profile photo sizing, Dhaka time format, theme transition mechanism, floating tech ticker speed/direction/spacing, fixed bottom navigation dock, or signature drawing stroke.
-- **Zero scroll-jacking:** Pure native browser scrolling throughout.
-
----
-
-## 3. Verification Plan
-
-### Automated Build & Lint Verification
-1. `npm run lint` (`tsc --noEmit`) to verify zero TypeScript errors.
-2. `npm run build` (`vite build`) to verify clean production bundle.
-
-### Functional Verification
-1. **Public Visitor Counter:**
-   - Open public portfolio in incognito/preview: verify counter increments by 1.
-   - Refresh page: verify duplicate increments are prevented.
-   - Verify admin session does not increment counter.
-2. **Voluntary Visitor Identification:**
-   - Click "Identify as visitor" in footer -> verify consent modal text.
-   - Complete Google Sign-In -> verify name and email stored in `identified_visitors`.
-   - Verify public visitors cannot read other visitors' records in Firestore.
-3. **Admin Visitor Section:**
-   - Click "Visitors: {count}" in top-right header -> verify modal opens.
-   - Check that "Total Visits" and "Identified Visitors" counts are displayed separately.
-   - Verify identified visitors table displays Name, Email, and Date.
-   - Test deleting a record as admin.
-4. **Website Reveal & Loading Screen:**
-   - Load public portfolio -> verify 1.5s loader with "Atikur Rahman" and thin progress bar.
-   - Verify smooth transition into the website entrance reveal (header, hero, bottom dock).
-   - Scroll through all sections (About, Tech Stack, Programming, Achievements, Signature, Footer) -> verify progressive mask and stagger reveals.
-   - Scroll up and down -> verify elements remain permanently visible without glitching.
+## 2. Circle Reveal Theme Transition (`src/hooks/useThemeReveal.ts`)
+- **Behavior**:
+  - When the moon/sun toggle is clicked, the new theme expands outward from the button's center as a growing circle covering the entire viewport over 800ms (`cubic-bezier(.65, 0, .25, 1)`). Works identically dark-to-light and light-to-dark.
+- **Implementation**:
+  - Hook `useThemeReveal.ts` triggers `document.startViewTransition` with state update synchronized via `flushSync`.
+  - Once transition is ready, animates `document.documentElement`'s `::view-transition-new(root)` pseudo-element with `clipPath: [circle(0px at x y), circle(radius at x y)]`.
+- **CSS Rule (`src/index.css`)**:
+  - `::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }`
+  - `::view-transition-old(root) { z-index: 1; }`
+  - `::view-transition-new(root) { z-index: 9999; }`
+- **Fallbacks**:
+  - Instantly toggles theme if `document.startViewTransition` is unsupported or `prefers-reduced-motion` is active. Never blocks clicks or interferes with normal page scrolling.

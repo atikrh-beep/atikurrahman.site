@@ -6,12 +6,12 @@ interface RevealContextType {
 }
 
 const RevealContext = createContext<RevealContextType>({
-  isSiteLoaded: false,
+  isSiteLoaded: true,
   setIsSiteLoaded: () => {},
 });
 
 export const RevealProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isSiteLoaded, setIsSiteLoaded] = useState<boolean>(false);
+  const [isSiteLoaded, setIsSiteLoaded] = useState<boolean>(true);
 
   return (
     <RevealContext.Provider value={{ isSiteLoaded, setIsSiteLoaded }}>

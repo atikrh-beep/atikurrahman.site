@@ -6,6 +6,7 @@ import {
 } from '../data/portfolioData.ts';
 import { VJudgeIcon, TophIcon, BeecrowdIcon } from './Icons.tsx';
 import { ScrollReveal } from './ScrollReveal.tsx';
+import { HandwrittenSignature } from './HandwrittenSignature.tsx';
 
 interface ProgrammingPageProps {
   onBackToHome?: () => void;
@@ -147,6 +148,11 @@ export const ProgrammingPage: React.FC<ProgrammingPageProps> = ({ onBackToHome }
             </ScrollReveal>
           ))}
         </div>
+      </div>
+
+      {/* Signature above footer */}
+      <div className="pt-10 pb-4">
+        <HandwrittenSignature />
       </div>
     </div>
   );

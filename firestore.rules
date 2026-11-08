@@ -1,16 +1,19 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function isAuthAdmin() {
-      return request.auth != null && (
-        request.auth.token.email.matches('(?i).*atik9909@gmail.*') ||
-        request.auth.token.email == 'atikurrahman@gmail.com'
-      );
-    }
-
     match /portfolio_content/{contentId} {
       allow read: if true;
-      allow write: if isAuthAdmin() || request.auth == null;
+      allow write: if false;
+    }
+
+    match /notes/{noteId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /robotics_projects/{projectId} {
+      allow read: if true;
+      allow write: if false;
     }
 
     match /test/connection {
@@ -19,7 +22,8 @@ service cloud.firestore {
     }
 
     match /{document=**} {
-      allow read, write: if false;
+      allow read: if true;
+      allow write: if false;
     }
   }
 }

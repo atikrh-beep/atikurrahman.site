@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useTheme } from '../context/ThemeContext.tsx';
+import { useThemeReveal } from '../hooks/useThemeReveal.ts';
 
 interface DhakaTimeThemeControlProps {
-  theme: 'dark' | 'light';
-  onToggleTheme: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  theme?: 'dark' | 'light';
+  onToggleTheme?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const DhakaTimeThemeControl: React.FC<DhakaTimeThemeControlProps> = ({
-  theme,
-  onToggleTheme,
+  theme: propTheme,
+  onToggleTheme: propToggleTheme,
 }) => {
+  const contextTheme = useTheme();
+  const theme = propTheme || contextTheme.theme;
+  const themeReveal = useThemeReveal();
+  const onToggleTheme = propToggleTheme || themeReveal;
+
   const [timeString, setTimeString] = useState<string>('');
 
   useEffect(() => {
@@ -52,12 +59,12 @@ export const DhakaTimeThemeControl: React.FC<DhakaTimeThemeControlProps> = ({
         {/* Label */}
         <span>Dhaka</span>
 
-        {/* 24-Hour Time in normal font weight (staying normal as others) */}
+        {/* 24-Hour Time in normal font weight */}
         <span className="font-normal tracking-tight">
           {timeString || '--:--'}
         </span>
 
-        {/* Theme Switch Icon Button - No square background on hover */}
+        {/* Theme Switch Icon Button with Pixel Dissolve trigger */}
         <button
           type="button"
           onClick={onToggleTheme}
@@ -107,4 +114,3 @@ export const DhakaTimeThemeControl: React.FC<DhakaTimeThemeControlProps> = ({
     </aside>
   );
 };
-

@@ -121,9 +121,9 @@ export function BigCrowdIcon({ className = "w-4 h-4" }: { className?: string }) 
 
 // Navigation Icons
 // HOME: clean geometric house icon
-export function PentagonHomeIcon({ className = "w-4 h-4" }: { className?: string }) {
+export function PentagonHomeIcon({ className = "w-5 h-5", strokeWidth = "2" }: { className?: string; strokeWidth?: string | number }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M12 3 L21 10 L18 21 L6 21 L3 10 Z" />
       <path d="M10 21 L10 14 L14 14 L14 21" />
     </svg>
@@ -131,9 +131,9 @@ export function PentagonHomeIcon({ className = "w-4 h-4" }: { className?: string
 }
 
 // ABOUT: minimal outlined document/notepad icon
-export function OutlinedNotepadIcon({ className = "w-4 h-4" }: { className?: string }) {
+export function OutlinedNotepadIcon({ className = "w-5 h-5", strokeWidth = "2" }: { className?: string; strokeWidth?: string | number }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <rect x="4" y="3" width="16" height="18" rx="2" ry="2" />
       <line x1="8" y1="8" x2="16" y2="8" />
       <line x1="8" y1="12" x2="16" y2="12" />
@@ -143,9 +143,9 @@ export function OutlinedNotepadIcon({ className = "w-4 h-4" }: { className?: str
 }
 
 // PROGRAMMING: clean minimal code / brackets icon
-export function CodePracticeNavIcon({ className = "w-4 h-4" }: { className?: string }) {
+export function CodePracticeNavIcon({ className = "w-5 h-5", strokeWidth = "2" }: { className?: string; strokeWidth?: string | number }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <polyline points="16 18 22 12 16 6" />
       <polyline points="8 6 2 12 8 18" />
     </svg>
@@ -153,9 +153,9 @@ export function CodePracticeNavIcon({ className = "w-4 h-4" }: { className?: str
 }
 
 // TECHNOLOGY/STACK: minimal user/technology outline icon
-export function MinimalPersonIcon({ className = "w-4 h-4" }: { className?: string }) {
+export function MinimalPersonIcon({ className = "w-5 h-5", strokeWidth = "2" }: { className?: string; strokeWidth?: string | number }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="8" r="4" />
       <path d="M5.5 20.5a6.5 6.5 0 0 1 13 0" />
     </svg>
@@ -163,11 +163,40 @@ export function MinimalPersonIcon({ className = "w-4 h-4" }: { className?: strin
 }
 
 // ACHIEVEMENT: thin/minimal @ symbol
-export function MinimalAtSymbolIcon({ className = "w-4 h-4" }: { className?: string }) {
+export function MinimalAtSymbolIcon({ className = "w-5 h-5", strokeWidth = "2" }: { className?: string; strokeWidth?: string | number }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="4" />
       <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8" />
+    </svg>
+  );
+}
+
+// IOT & ROBOTICS: minimal hardware processor / bot icon
+export function RoboticsCpuNavIcon({ className = "w-5 h-5", strokeWidth = "2" }: { className?: string; strokeWidth?: string | number }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="4" y="4" width="16" height="16" rx="3" />
+      <rect x="8.5" y="8.5" width="7" height="7" rx="1.5" />
+      <line x1="9" y1="1" x2="9" y2="4" />
+      <line x1="15" y1="1" x2="15" y2="4" />
+      <line x1="9" y1="20" x2="9" y2="23" />
+      <line x1="15" y1="20" x2="15" y2="23" />
+      <line x1="20" y1="9" x2="23" y2="9" />
+      <line x1="20" y1="15" x2="23" y2="15" />
+      <line x1="1" y1="9" x2="4" y2="9" />
+      <line x1="1" y1="15" x2="4" y2="15" />
+    </svg>
+  );
+}
+
+// CONTACT: minimal clipboard / link copy icon
+export function ContactShareNavIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+      <path d="m9 14 2 2 4-4" />
     </svg>
   );
 }

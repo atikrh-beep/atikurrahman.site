@@ -2,7 +2,7 @@ import React from 'react';
 import { ABOUT_TEXT } from '../data/portfolioData.ts';
 import { SectionContainer } from './SectionContainer.tsx';
 import { ScrollReveal } from './ScrollReveal.tsx';
-import { GlassSocialPill } from './GlassSocialPill.tsx';
+import { GlassAccordionSocial } from './GlassAccordionSocial.tsx';
 
 export const About: React.FC = () => {
   return (
@@ -18,12 +18,12 @@ export const About: React.FC = () => {
           </p>
         </ScrollReveal>
 
-        {/* Floating Glass Pill - Left-aligned with the About text */}
-        <ScrollReveal variant="fade-up" delay={100} duration={650}>
-          <div className="flex justify-start w-fit">
-            <GlassSocialPill />
-          </div>
-        </ScrollReveal>
+        {/* White Glass Accordion Social Navigation — Left-aligned with About text */}
+        <div className="pt-2 flex justify-start">
+          <ScrollReveal variant="fade-up" delay={80} duration={650}>
+            <GlassAccordionSocial />
+          </ScrollReveal>
+        </div>
       </div>
     </SectionContainer>
   );

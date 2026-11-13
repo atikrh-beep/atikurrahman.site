@@ -28,7 +28,7 @@ export const ProgrammingPage: React.FC<ProgrammingPageProps> = ({ onBackToHome }
 
   return (
     <div 
-      className="w-full max-w-4xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24"
+      className="site-container pt-12 sm:pt-20 pb-24"
       aria-label="Programming Page"
     >
       {/* Editorial Page Heading */}

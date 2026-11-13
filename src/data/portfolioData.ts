@@ -23,6 +23,14 @@ export const SITE_IDENTITY = 'atikurrahman.site';
 export const FULL_NAME = 'Atikur Rahman';
 export const HERO_HEADLINE = 'Exploring Computer Science, Problem Solving, AI & Innovative Technology';
 
+export const TYPING_ROLES: string[] = [
+  'Exploring Computer Science, Problem Solving, AI & Innovative Technology',
+  'Computer Science and Engineering student',
+  'Problem solver',
+  'Web developer',
+  'AI explorer',
+];
+
 // University subtle identity
 export const UNIVERSITY_NAME = 'Daffodil International University';
 export const UNIVERSITY_DEPARTMENT = 'Computer Science and Engineering';

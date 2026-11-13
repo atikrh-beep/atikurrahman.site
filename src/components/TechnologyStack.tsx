@@ -21,11 +21,11 @@ export const TechnologyStack: React.FC = () => {
         Main portfolio section heading remains centered and constrained:
         Matches max-w-4xl mx-auto px-6 sm:px-8 exactly as other sections
       */}
-      <div className="w-full max-w-4xl mx-auto px-6 sm:px-8 space-y-4 mb-5">
+      <div className="site-container space-y-4 mb-5">
         <div>
           <ScrollReveal variant="mask-up" duration={650}>
-            <span className="inline-block text-[11px] uppercase tracking-widest font-mono text-[var(--text-muted)] select-none">
-              Technology & Stack
+            <span className="inline-block text-[11px] uppercase tracking-wider font-mono text-[var(--text-muted)] select-none">
+              Technology &amp; Stack
             </span>
           </ScrollReveal>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext.tsx';
-import { useThemeReveal } from '../hooks/useThemeReveal.ts';
+import { useCircularThemeReveal } from '../hooks/useCircularThemeReveal.ts';
 
 interface DhakaTimeThemeControlProps {
   theme?: 'dark' | 'light';
@@ -13,8 +13,8 @@ export const DhakaTimeThemeControl: React.FC<DhakaTimeThemeControlProps> = ({
 }) => {
   const contextTheme = useTheme();
   const theme = propTheme || contextTheme.theme;
-  const themeReveal = useThemeReveal();
-  const onToggleTheme = propToggleTheme || themeReveal;
+  const toggleWithCircularReveal = useCircularThemeReveal();
+  const onToggleTheme = propToggleTheme || toggleWithCircularReveal;
 
   const [timeString, setTimeString] = useState<string>('');
 

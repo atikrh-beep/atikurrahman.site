@@ -26,7 +26,7 @@ function PortfolioContent() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-body)] selection:bg-[var(--text-primary)]/15 selection:text-[var(--text-primary)] transition-colors duration-500 relative">
-      {/* Website Header + Top-Right Dhaka Time & Theme Control with Circle Reveal */}
+      {/* Website Header + Top-Right Dhaka Time & Theme Control */}
       <SiteHeader onNavigateHome={() => navigate('/')} />
 
       {/* Main Content Area based on active route */}

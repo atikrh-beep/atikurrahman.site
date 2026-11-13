@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ScrollReveal } from './ScrollReveal.tsx';
-import { FULL_NAME, HERO_HEADLINE, PROFILE_IMAGE_URL, PROFILE_IMAGE_FALLBACK, UNIVERSITY_NAME, UNIVERSITY_DEPARTMENT } from '../data/portfolioData.ts';
+import { TypingTagline } from './TypingTagline.tsx';
+import { FULL_NAME, PROFILE_IMAGE_URL, PROFILE_IMAGE_FALLBACK } from '../data/portfolioData.ts';
 import { 
   auth, 
   isUserAdmin, 
@@ -222,7 +223,7 @@ export const Hero: React.FC = () => {
   return (
     <section 
       id="home" 
-      className="w-full max-w-5xl mx-auto px-6 sm:px-10 pt-14 sm:pt-24 pb-14 sm:pb-20"
+      className="site-container pt-10 sm:pt-14 pb-6 sm:pb-8"
       aria-label="Introduction"
     >
       {/* Hidden file input for uploading profile photo */}
@@ -242,7 +243,7 @@ export const Hero: React.FC = () => {
         Horizontal arrangement:
         [Photo] → Atikur Rahman + Tagline directly below name
       */}
-      <div className="flex flex-col-reverse sm:flex-row sm:items-end justify-between gap-10 sm:gap-16" data-intro="1">
+      <div className="flex items-center gap-5 sm:gap-7">
         {/* Left: Profile Photo Container */}
         <ScrollReveal variant="fade-up" duration={700} className="shrink-0 flex justify-start">
           <div className="relative group" ref={menuRef}>
@@ -351,41 +352,15 @@ export const Hero: React.FC = () => {
         </ScrollReveal>
 
         {/* Right: Full Name & Tagline directly below */}
-        <div className="max-w-2xl space-y-5">
-          <ScrollReveal variant="fade-up" duration={650}>
-            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--accent)]">
-              Computer Science &amp; Engineering
-            </p>
-          </ScrollReveal>
+        <div className="flex-1 min-w-0 space-y-1 sm:space-y-1.5">
           <ScrollReveal variant="mask-up" delay={50} duration={750}>
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-semibold tracking-[-0.055em] text-[var(--text-primary)] leading-[0.98]">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-[var(--text-primary)] leading-tight">
               {FULL_NAME}
             </h1>
           </ScrollReveal>
 
           <ScrollReveal variant="fade-up" delay={120} duration={700}>
-            <p data-intro="2" className="text-base sm:text-lg text-[var(--text-body)] font-normal leading-relaxed max-w-xl">
-              {HERO_HEADLINE}
-            </p>
-          </ScrollReveal>
-
-          <ScrollReveal variant="fade-up" delay={180} duration={650}>
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] text-[var(--text-muted)]">
-              <span>{UNIVERSITY_NAME}</span>
-              <span className="hidden sm:inline text-[var(--border-hover)]">/</span>
-              <span>{UNIVERSITY_DEPARTMENT}</span>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal variant="fade-up" delay={230} duration={650}>
-            <div className="flex flex-wrap gap-3 pt-1">
-              <a href="https://github.com/atikrh-beep" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-[var(--text-primary)] px-4 py-2.5 text-xs font-semibold text-[var(--bg-page)] transition-transform hover:-translate-y-0.5">
-                View my work <span aria-hidden="true">↗</span>
-              </a>
-              <a href="https://bd.linkedin.com/in/md-atikur-rahman-4874aa299" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] px-4 py-2.5 text-xs font-semibold text-[var(--text-primary)] transition-colors hover:border-[var(--border-hover)]">
-                Let&apos;s connect
-              </a>
-            </div>
+            <TypingTagline />
           </ScrollReveal>
         </div>
       </div>

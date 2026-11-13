@@ -11,10 +11,10 @@ export const AtmosphericCloudOverlay: React.FC<AtmosphericCloudOverlayProps> = (
   const isDark = theme === 'dark';
 
   // Matching exact portfolio page background CSS variables
-  // Dark: #121316, Light: #F7F3EA
-  const edgeColor = isDark ? '#121316' : '#F7F3EA';
-  const midColor = isDark ? 'rgba(18, 19, 22, 0.72)' : 'rgba(247, 243, 234, 0.72)';
-  const softColor = isDark ? 'rgba(18, 19, 22, 0.28)' : 'rgba(247, 243, 234, 0.28)';
+  // Dark: #121316, Light: #FFFFFF
+  const edgeColor = isDark ? '#121316' : '#FFFFFF';
+  const midColor = isDark ? 'rgba(18, 19, 22, 0.72)' : 'rgba(255, 255, 255, 0.72)';
+  const softColor = isDark ? 'rgba(18, 19, 22, 0.28)' : 'rgba(255, 255, 255, 0.28)';
 
   return (
     <>

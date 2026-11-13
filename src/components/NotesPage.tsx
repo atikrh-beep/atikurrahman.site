@@ -10,7 +10,7 @@ interface NotesPageProps {
 export const NotesPage: React.FC<NotesPageProps> = ({ onBackToHome }) => {
   return (
     <div 
-      className="w-full max-w-4xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-28 min-h-[70vh] flex flex-col justify-between"
+      className="site-container pt-12 sm:pt-20 pb-28 min-h-[70vh] flex flex-col justify-between"
       aria-label="Notes Page"
     >
       <div>

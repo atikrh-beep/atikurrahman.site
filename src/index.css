@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @font-face {
   font-family: 'Harris Signature';
@@ -13,32 +14,30 @@
 }
 
 @layer base {
-  :root {
-    --bg-page: #08111f;
-    --bg-surface: rgba(15, 29, 49, 0.76);
-    --bg-surface-elevated: #142944;
-    --text-primary: #f5f8fc;
-    --text-body: #b7c5d6;
-    --text-muted: #71839a;
-    --border-subtle: rgba(164, 190, 218, 0.14);
-    --border-hover: rgba(125, 211, 252, 0.42);
-    --accent-tint: rgba(125, 211, 252, 0.08);
-    --accent: #7dd3fc;
-    --signature-color: #dcecff;
+  :root, html.dark {
+    --bg-page: #121316;
+    --bg-surface: #1A1C20;
+    --bg-surface-elevated: #23262D;
+    --text-primary: #F3F4F6;
+    --text-body: #D1D5DB;
+    --text-muted: #9CA3AF;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.16);
+    --accent-tint: rgba(255, 255, 255, 0.04);
+    --signature-color: #E5E7EB;
   }
 
   html.light {
-    --bg-page: #f4f8fc;
-    --bg-surface: rgba(255, 255, 255, 0.78);
-    --bg-surface-elevated: #ffffff;
-    --text-primary: #0a1728;
-    --text-body: #41536a;
-    --text-muted: #71839a;
-    --border-subtle: rgba(10, 23, 40, 0.12);
-    --border-hover: rgba(3, 105, 161, 0.42);
-    --accent-tint: rgba(3, 105, 161, 0.07);
-    --accent: #0369a1;
-    --signature-color: #0a1728;
+    --bg-page: #FFFFFF;
+    --bg-surface: #FFFFFF;
+    --bg-surface-elevated: #FFFFFF;
+    --text-primary: #171717;
+    --text-body: #737373;
+    --text-muted: #737373;
+    --border-subtle: #E5E5E5;
+    --border-hover: #D4D4D4;
+    --accent-tint: rgba(0, 0, 0, 0.02);
+    --signature-color: #171717;
   }
 
   html, body {
@@ -47,20 +46,36 @@
   }
 
   body {
-    background:
-      radial-gradient(circle at 8% 0%, rgba(56, 189, 248, 0.1), transparent 30rem),
-      radial-gradient(circle at 92% 18%, rgba(99, 102, 241, 0.08), transparent 28rem),
-      var(--bg-page);
+    background-color: var(--bg-page);
     color: var(--text-body);
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
     margin: 0;
     padding: 0;
   }
+}
 
-  ::selection {
-    background: var(--accent);
-    color: var(--bg-page);
+/* Shared responsive global layout container with reduced left and right margins */
+.site-container {
+  width: 100%;
+  max-width: 72rem; /* 1152px - spacious content area bringing content closer to both screen edges */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem; /* 20px on mobile */
+  padding-right: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .site-container {
+    padding-left: 2rem; /* 32px on tablet */
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-container {
+    padding-left: 3rem; /* 48px on desktop - creates ~45-50px outer margins */
+    padding-right: 3rem;
   }
 }
 
@@ -120,14 +135,6 @@
   border-radius: 9999px;
 }
 
-/* Shared editorial surface treatment */
-.portfolio-surface {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.12);
-  backdrop-filter: blur(18px);
-}
-
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -142,38 +149,3 @@
 .animate-fade-in {
   animation: fade-in 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-
-/* ========================================================
-   CURSOR SWARM INTRO STYLES
-   ======================================================== */
-
-/* While intro is running, first-screen targets are hidden */
-html.intro-pending [data-intro] {
-  opacity: 0 !important;
-  transform: translate3d(0, 12px, 0) !important;
-  filter: blur(6px) !important;
-}
-
-/* Moment cursor arrives: smooth 450ms reveal, removed immediately after */
-[data-intro].intro-animating {
-  opacity: 1 !important;
-  transform: translate3d(0, 0, 0) !important;
-  filter: blur(0px) !important;
-  transition: opacity 450ms cubic-bezier(0.16, 1, 0.3, 1),
-              transform 450ms cubic-bezier(0.16, 1, 0.3, 1),
-              filter 450ms cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, ::before, ::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-  html.intro-pending [data-intro] {
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-  }
-}
-

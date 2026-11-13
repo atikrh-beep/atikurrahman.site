@@ -1,12 +1,30 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter, AppRoute } from '../context/RouterContext.tsx';
 import {
-  Home,
   Clipboard,
   Code,
   Laptop,
   AtSign,
 } from 'lucide-react';
+
+// Geometric pentagon-shaped house outline without door or interior lines
+const PentagonHouseIcon: React.FC<{ className?: string; strokeWidth?: number }> = ({
+  className = 'w-[17px] h-[17px] sm:w-[18px] sm:h-[18px]',
+  strokeWidth = 1.8,
+}) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M12 3.5 L20.5 10 V20.5 H3.5 V10 Z" />
+  </svg>
+);
 
 export type NavTarget = AppRoute | 'contact';
 
@@ -31,7 +49,7 @@ export const BottomNavigation: React.FC = () => {
   const copyTimeoutRef = useRef<number | null>(null);
 
   // Exactly five icons in required order:
-  // 1. Home
+  // 1. Home (Pentagon-shaped house silhouette)
   // 2. Notes
   // 3. Code
   // 4. IoT & Robotics (Laptop)
@@ -41,30 +59,30 @@ export const BottomNavigation: React.FC = () => {
       id: 'home',
       tooltip: 'Home',
       routeMatch: 'home',
-      icon: <Home className="w-[18px] h-[18px] sm:w-[19px] sm:h-[19px]" strokeWidth={1.8} />,
+      icon: <PentagonHouseIcon className="w-[17px] h-[17px] sm:w-[18px] sm:h-[18px]" strokeWidth={1.8} />,
     },
     {
       id: 'notes',
       tooltip: 'Notes',
       routeMatch: 'notes',
-      icon: <Clipboard className="w-[18px] h-[18px] sm:w-[19px] sm:h-[19px]" strokeWidth={1.8} />,
+      icon: <Clipboard className="w-[17px] h-[17px] sm:w-[18px] sm:h-[18px]" strokeWidth={1.8} />,
     },
     {
       id: 'code',
       tooltip: 'Code',
       routeMatch: 'code',
-      icon: <Code className="w-[18px] h-[18px] sm:w-[19px] sm:h-[19px]" strokeWidth={1.8} />,
+      icon: <Code className="w-[17px] h-[17px] sm:w-[18px] sm:h-[18px]" strokeWidth={1.8} />,
     },
     {
       id: 'robotics',
       tooltip: 'IoT & Robotics',
       routeMatch: 'robotics',
-      icon: <Laptop className="w-[18px] h-[18px] sm:w-[19px] sm:h-[19px]" strokeWidth={1.8} />,
+      icon: <Laptop className="w-[17px] h-[17px] sm:w-[18px] sm:h-[18px]" strokeWidth={1.8} />,
     },
     {
       id: 'contact',
       tooltip: 'Contact',
-      icon: <AtSign className="w-[18px] h-[18px] sm:w-[19px] sm:h-[19px]" strokeWidth={1.8} />,
+      icon: <AtSign className="w-[17px] h-[17px] sm:w-[18px] sm:h-[18px]" strokeWidth={1.8} />,
     },
   ];
 
@@ -199,7 +217,7 @@ export const BottomNavigation: React.FC = () => {
         <div 
           ref={dockRef}
           onMouseLeave={() => setHoveredItem(null)}
-          className="relative flex items-center gap-0.5 sm:gap-1 px-2 py-1 sm:px-2.5 sm:py-1 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)]/85 backdrop-blur-md shadow-lg shadow-black/20"
+          className="relative flex items-center gap-2 sm:gap-3 px-3.5 py-1 sm:px-4 sm:py-1 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)]/85 backdrop-blur-md shadow-lg shadow-black/20"
         >
           {navItems.map((item, index) => {
             const isActive = item.routeMatch && activeRoute === item.routeMatch;
@@ -228,7 +246,7 @@ export const BottomNavigation: React.FC = () => {
                   onFocus={() => setHoveredItem(item.id)}
                   onBlur={() => setHoveredItem(null)}
                   aria-label={item.tooltip}
-                  className={`relative w-8 h-8 sm:w-[34px] sm:h-[34px] rounded-full inline-flex items-center justify-center transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--text-primary)] ${
+                  className={`relative w-[34px] h-8 sm:w-9 sm:h-[34px] rounded-full inline-flex items-center justify-center transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--text-primary)] ${
                     isActive
                       ? 'text-[var(--text-primary)]'
                       : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'

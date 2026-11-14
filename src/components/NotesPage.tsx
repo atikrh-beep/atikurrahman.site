@@ -1,6 +1,5 @@
 import React from 'react';
 import { ScrollReveal } from './ScrollReveal.tsx';
-import { HandwrittenSignature } from './HandwrittenSignature.tsx';
 
 interface NotesPageProps {
   onBackToHome?: () => void;
@@ -10,10 +9,9 @@ interface NotesPageProps {
 export const NotesPage: React.FC<NotesPageProps> = ({ onBackToHome }) => {
   return (
     <div 
-      className="site-container pt-12 sm:pt-20 pb-28 min-h-[70vh] flex flex-col justify-between"
+      className="site-container pt-12 sm:pt-20 pb-14 sm:pb-16"
       aria-label="Notes Page"
     >
-      <div>
         {/* Back navigation */}
         {onBackToHome && (
           <ScrollReveal variant="fade-up" duration={500}>
@@ -67,13 +65,7 @@ export const NotesPage: React.FC<NotesPageProps> = ({ onBackToHome }) => {
               Structured concept summaries, technical learning resources, and personal essays are currently being prepared.
             </p>
           </div>
-        </ScrollReveal>
-      </div>
-
-      {/* Signature at page base */}
-      <div className="mt-20">
-        <HandwrittenSignature />
-      </div>
+      </ScrollReveal>
     </div>
   );
 };

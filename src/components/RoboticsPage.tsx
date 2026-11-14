@@ -1,6 +1,5 @@
 import React from 'react';
 import { ScrollReveal } from './ScrollReveal.tsx';
-import { HandwrittenSignature } from './HandwrittenSignature.tsx';
 
 interface RoboticsPageProps {
   onBackToHome?: () => void;
@@ -10,10 +9,9 @@ interface RoboticsPageProps {
 export const RoboticsPage: React.FC<RoboticsPageProps> = ({ onBackToHome }) => {
   return (
     <div 
-      className="site-container pt-12 sm:pt-20 pb-28 min-h-[70vh] flex flex-col justify-between"
+      className="site-container pt-12 sm:pt-20 pb-14 sm:pb-16"
       aria-label="IoT and Robotics Page"
     >
-      <div>
         {/* Back navigation */}
         {onBackToHome && (
           <ScrollReveal variant="fade-up" duration={500}>
@@ -67,13 +65,7 @@ export const RoboticsPage: React.FC<RoboticsPageProps> = ({ onBackToHome }) => {
               Physical microcontroller builds, hardware schematics, and sensor control routines are currently in development.
             </p>
           </div>
-        </ScrollReveal>
-      </div>
-
-      {/* Signature at page base */}
-      <div className="mt-20">
-        <HandwrittenSignature />
-      </div>
+      </ScrollReveal>
     </div>
   );
 };

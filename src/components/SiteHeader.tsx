@@ -17,7 +17,7 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
   const { navigate } = useRouter();
 
   return (
-    <header className="relative site-container pt-8 sm:pt-10 flex items-center justify-end">
+    <header className="relative z-[1] site-container pt-8 sm:pt-10 flex items-center justify-end">
       {/* Top-Right Dhaka Time & Theme Switch locked to master container */}
       <ScrollReveal variant="fade-up" delay={60} duration={650}>
         <DhakaTimeThemeControl

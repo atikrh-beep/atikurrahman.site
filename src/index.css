@@ -1,18 +1,6 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
-@font-face {
-  font-family: 'Harris Signature';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/HarrisSignature.otf') format('opentype');
-}
-
-.font-harris-signature {
-  font-family: 'Harris Signature', cursive, sans-serif;
-}
-
 @layer base {
   :root, html.dark {
     --bg-page: #121316;
